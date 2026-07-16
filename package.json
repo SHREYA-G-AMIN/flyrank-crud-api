@@ -1,0 +1,24 @@
+{
+  "name": "flyrank-crud-api",
+  "version": "1.0.0",
+  "description": "Week 2 Backend AI Engineering assignment – A CRUD Task API built with Node.js and Express, featuring REST endpoints, Swagger UI, and GitHub-based development.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SHREYA-G-AMIN/flyrank-crud-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SHREYA-G-AMIN/flyrank-crud-api/issues"
+  },
+  "homepage": "https://github.com/SHREYA-G-AMIN/flyrank-crud-api#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
