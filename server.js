@@ -1,10 +1,27 @@
 const express = require("express");
 
 const app = express();
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+
 app.use(express.json());
 
 const PORT = 3000;
 
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Task API",
+      version: "1.0.0",
+      description: "A simple CRUD API built with Express"
+    }
+  },
+  apis: ["./server.js"]
+};
+
+const swaggerSpec = swaggerJsdoc(options);
 const tasks = [
   {
     id: 1,
@@ -39,6 +56,15 @@ app.get("/health", (req, res) => {
   });
 });
 
+/**
+ * @swagger
+ * /tasks:
+ *   get:
+ *     summary: Get all tasks
+ *     responses:
+ *       200:
+ *         description: Returns all tasks
+ */
 // Get all tasks
 app.get("/tasks", (req, res) => {
   res.json(tasks);
@@ -59,6 +85,37 @@ app.get("/tasks/:id", (req, res) => {
   res.json(task);
 });
 
+/**
+ * @swagger
+ * /tasks:
+ *   post:
+ *     summary: Create a new task
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Task created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 title:
+ *                   type: string
+ *                 done:
+ *                   type: boolean
+ *       400:
+ *         description: Invalid input
+ */
 // Create task
 app.post("/tasks", (req, res) => {
   const title = req.body.title;
@@ -122,6 +179,13 @@ app.delete("/tasks/:id", (req, res) => {
   res.json({
     message: "Task deleted successfully"
   });
+});
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
 });
 
 app.listen(PORT, () => {
