@@ -21,7 +21,7 @@ A simple CRUD API built with Node.js and Express as part of the FlyRank Backend 
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/flyrank-crud-api.git
+git clone https://github.com/SHREYA-G-AMIN/flyrank-crud-api.git
 cd flyrank-crud-api
 npm install
 node server.js
