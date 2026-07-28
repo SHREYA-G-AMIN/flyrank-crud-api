@@ -161,7 +161,7 @@ app.get("/tasks/:id", (req, res) => {
  */
 // Create task
 app.post("/tasks", (req, res) => {
-  const title = req.body.title;
+  const { title } = req.body;
 
   if (!title || title.trim() === "") {
     return res.status(400).json({
@@ -169,15 +169,23 @@ app.post("/tasks", (req, res) => {
     });
   }
 
-  const newTask = {
-    id: tasks.length + 1,
-    title: title,
-    done: false
-  };
+  db.run(
+    "INSERT INTO tasks (title, done) VALUES (?, ?)",
+    [title, 0],
+    function (err) {
+      if (err) {
+        return res.status(500).json({
+          error: "Database error"
+        });
+      }
 
-  tasks.push(newTask);
-
-  res.status(201).json(newTask);
+      res.status(201).json({
+        id: this.lastID,
+        title,
+        done: false
+      });
+    }
+  );
 });
 
 // Update task
