@@ -68,11 +68,20 @@ const tasks = [
 ];
 
 // Home
-app.get("/", (req, res) => {
-  res.json({
-    name: "Task API",
-    version: "1.0",
-    endpoints: ["/tasks"]
+app.get("/tasks", (req, res) => {
+  db.all("SELECT * FROM tasks", (err, rows) => {
+    if (err) {
+      return res.status(500).json({
+        error: "Database error"
+      });
+    }
+
+    const tasks = rows.map(task => ({
+      ...task,
+      done: Boolean(task.done)
+    }));
+
+    res.json(tasks);
   });
 });
 
@@ -99,17 +108,24 @@ app.get("/tasks", (req, res) => {
 
 // Get task by ID
 app.get("/tasks/:id", (req, res) => {
-  const taskId = parseInt(req.params.id);
+  const taskId = req.params.id;
 
-  const task = tasks.find((task) => task.id === taskId);
+  db.get("SELECT * FROM tasks WHERE id = ?", [taskId], (err, row) => {
+    if (err) {
+      return res.status(500).json({
+        error: "Database error"
+      });
+    }
 
-  if (!task) {
-    return res.status(404).json({
-      error: `Task ${taskId} not found`
-    });
-  }
+    if (!row) {
+      return res.status(404).json({
+        error: `Task ${taskId} not found`
+      });
+    }
 
-  res.json(task);
+    row.done = Boolean(row.done);
+    res.json(row);
+  });
 });
 
 /**
