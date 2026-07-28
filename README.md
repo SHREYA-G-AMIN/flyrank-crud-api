@@ -72,23 +72,9 @@ SELECT * FROM tasks;
 
 ## Database Screenshot
 
-Create a folder named:
 
-```
-Screenshots
-```
-
-Save your DB Browser screenshot as:
-
-```
-database.png
-```
-
-Then add:
-
-```md
 ![Database](Screenshots/database.png)
-```
+
 
 ## Author
 
