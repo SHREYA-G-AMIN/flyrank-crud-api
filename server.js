@@ -190,16 +190,7 @@ app.post("/tasks", (req, res) => {
 
 // Update task
 app.put("/tasks/:id", (req, res) => {
-  const taskId = parseInt(req.params.id);
-
-  const task = tasks.find((task) => task.id === taskId);
-
-  if (!task) {
-    return res.status(404).json({
-      error: `Task ${taskId} not found`
-    });
-  }
-
+  const taskId = req.params.id;
   const { title, done } = req.body;
 
   if (!title || title.trim() === "") {
@@ -208,27 +199,50 @@ app.put("/tasks/:id", (req, res) => {
     });
   }
 
-  task.title = title;
-  task.done = done;
+  db.run(
+    "UPDATE tasks SET title = ?, done = ? WHERE id = ?",
+    [title, done ? 1 : 0, taskId],
+    function (err) {
+      if (err) {
+        return res.status(500).json({
+          error: "Database error"
+        });
+      }
 
-  res.json(task);
+      if (this.changes === 0) {
+        return res.status(404).json({
+          error: `Task ${taskId} not found`
+        });
+      }
+
+      res.json({
+        id: Number(taskId),
+        title,
+        done
+      });
+    }
+  );
 });
 
 app.delete("/tasks/:id", (req, res) => {
-  const taskId = parseInt(req.params.id);
+  const taskId = req.params.id;
 
-  const index = tasks.findIndex((task) => task.id === taskId);
+  db.run("DELETE FROM tasks WHERE id = ?", [taskId], function (err) {
+    if (err) {
+      return res.status(500).json({
+        error: "Database error"
+      });
+    }
 
-  if (index === -1) {
-    return res.status(404).json({
-      error: `Task ${taskId} not found`
+    if (this.changes === 0) {
+      return res.status(404).json({
+        error: `Task ${taskId} not found`
+      });
+    }
+
+    res.json({
+      message: "Task deleted successfully"
     });
-  }
-
-  tasks.splice(index, 1);
-
-  res.json({
-    message: "Task deleted successfully"
   });
 });
 
