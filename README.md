@@ -1,81 +1,180 @@
 # FlyRank CRUD API
 
-A simple CRUD API built with Node.js, Express, and SQLite as part of the FlyRank Backend AI Engineering Internship.
+A RESTful Task Management API built with **Node.js**, **Express.js**, and **SQLite**. This project demonstrates the fundamentals of backend development by implementing a complete CRUD API with persistent database storage and interactive API documentation using Swagger.
+
+---
 
 ## Features
 
-- Create tasks
-- Read all tasks
-- Read task by ID
-- Update tasks
-- Delete tasks
-- Persistent storage using SQLite
-- Swagger API Documentation
+- Create a new task
+- Retrieve all tasks
+- Retrieve a task by ID
+- Update an existing task
+- Delete a task
+- Persistent data storage using SQLite
+- Automatic database and table creation
+- Automatic seeding with sample data on first run
+- Interactive API documentation with Swagger UI
+
+---
 
 ## Tech Stack
 
-- Node.js
-- Express.js
-- SQLite
-- sqlite3
-- Swagger UI
-- JavaScript
+| Technology | Purpose |
+|------------|---------|
+| Node.js | Runtime |
+| Express.js | REST API |
+| SQLite | Database |
+| sqlite3 | SQLite driver |
+| Swagger UI | API Documentation |
 
-## Why SQLite?
+---
 
-SQLite was chosen because it is lightweight, requires no separate database server, and stores all data in a single file. It is perfect for learning backend development and small projects.
-
-## Database
-
-The database file is:
+## Project Structure
 
 ```
-tasks.db
+flyrank-crud-api/
+│
+├── server.js
+├── tasks.db
+├── package.json
+├── package-lock.json
+├── README.md
+└── Screenshots/
+    └── database.png
 ```
 
-It is automatically created when the application starts if it does not already exist.
+---
 
-## Installation
+## Getting Started
+
+### Clone the repository
 
 ```bash
 git clone https://github.com/SHREYA-G-AMIN/flyrank-crud-api.git
 cd flyrank-crud-api
+```
+
+### Install dependencies
+
+```bash
 npm install
+```
+
+### Run the server
+
+```bash
 node server.js
 ```
+
+The server starts on:
+
+```
+http://localhost:3000
+```
+
+---
 
 ## API Endpoints
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+|---------|----------|-------------|
 | GET | / | Home |
-| GET | /health | Health check |
+| GET | /health | Health Check |
 | GET | /tasks | Get all tasks |
 | GET | /tasks/:id | Get task by ID |
 | POST | /tasks | Create task |
 | PUT | /tasks/:id | Update task |
 | DELETE | /tasks/:id | Delete task |
 
+---
+
+## Example Request
+
+### Create Task
+
+```http
+POST /tasks
+```
+
+```json
+{
+  "title": "Learn SQLite"
+}
+```
+
+### Response
+
+```json
+{
+  "id": 4,
+  "title": "Learn SQLite",
+  "done": false
+}
+```
+
+---
+
+## Database
+
+This project uses **SQLite**, a lightweight relational database stored locally in:
+
+```
+tasks.db
+```
+
+On first launch the application automatically:
+
+- Creates the database
+- Creates the `tasks` table
+- Inserts sample tasks only if the table is empty
+
+---
+
 ## Swagger Documentation
 
-Open:
+After starting the server, open:
 
 ```
 http://localhost:3000/api-docs
 ```
 
-## Example SQL Query
+---
+
+## SQL Queries Practiced
 
 ```sql
 SELECT * FROM tasks;
+
+SELECT * FROM tasks WHERE done = 1;
+
+SELECT COUNT(*) FROM tasks;
+
+UPDATE tasks SET done = 1;
+
+DELETE FROM tasks WHERE done = 1;
 ```
 
-## Database Screenshot
+---
 
+## Database Preview
 
 ![Database](Screenshots/database.png)
 
+---
 
-## Author
+## Learning Outcomes
 
-Created by Shreya for the FlyRank Backend AI Engineering Internship.
+This project demonstrates:
+
+- REST API development
+- CRUD operations
+- SQLite integration
+- SQL queries
+- Persistent data storage
+- Express middleware
+- API documentation with Swagger
+- Database initialization and seeding
+
+---
+
